@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{parent()}} - Delete Empresa{% endblock %}
+
+{% block body %}
+{{parent()}}
+<div><h3>Do you really want to delete empresa: {{empresa.nombre}}</h3></div>
+<a href="{{path('empresa-list')}}" class="btn btn-warning">Cancel</a>
+<a href="{{'/delete_empresa/' ~ id}}"" class="btn btn-warning">Delete</a>
+
+{% endblock %}

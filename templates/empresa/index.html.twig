@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{parent()}} - Create Empresa{% endblock %}
+
+{% block body %}
+{{parent()}}
+{{ form_start(form) }}
+<table>
+    <tr>{{ form_row(form.nombre, {
+        label: 'Nombre de Empresa'
+    }) }}</tr>
+     <tr>{{ form_row(form.telefono) }}</tr>
+     <tr>{{ form_row(form.email) }}</tr>
+     <tr>{% for tag in form.sector %}
+            {{ form_row(tag.nombre) }}
+        {% endfor %}</tr>
+     <tr><td>{{ form_row(form.save) }}</td>
+    <td>{{ form_row(form.cancel) }}</td></tr>
+{{ form_end(form) }}</table>
+{% endblock %}

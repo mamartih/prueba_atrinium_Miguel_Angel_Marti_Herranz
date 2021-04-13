@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{parent()}} - Delete Sector{% endblock %}
+
+{% block body %}
+{{parent()}}
+<div><h3>Do you really want to delete Sector: {{sector.nombre}}</h3></div>
+{% if is_granted('ROLE_ADMIN') %}
+<a href="{{path('sector-list')}}" class="btn btn-warning">Cancel</a>
+<a href="{{'/delete_sector/' ~ id}}" class="btn btn-warning">Delete</a>
+{% endif %}
+{% endblock %}

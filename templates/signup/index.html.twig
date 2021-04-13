@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{parent()}} - Sign Up {% endblock %}
+
+{% block body %}
+{{parent()}}
+        {# {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %} #}
+
+{{form(form)}} #}
+<a href="{{path('dashboard')}}" class="btn btn-warning">Cancel</a>
+
+{% endblock %}

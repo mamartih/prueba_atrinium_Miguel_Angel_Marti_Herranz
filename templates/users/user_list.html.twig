@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{parent()}} - User List{% endblock %}
+
+{% block body %}
+{{parent()}}
+{# {{dump(pagination)}} #}
+<div class="count">
+   Numero de Usuarios => {{ pagination.getTotalItemCount }}
+</div>
+<table class="table">
+    <tr>
+        {# sorting of properties based on query components #}
+        
+        <th>{{ knp_pagination_sortable(pagination, 'Id', 'a.1') }}</th>
+        <th{% if pagination.isSorted('a.email') %} class="sorted"{% endif %}>
+            {{ knp_pagination_sortable(pagination, 'Email', 'a.email') }}
+        </th>
+        <th{% if pagination.isSorted('a.roles') %} class="sorted"{% endif %}>
+            {{ knp_pagination_sortable(pagination, 'Roles', 'a.roles') }}
+        </th>
+        <th{% if pagination.isSorted('a.nombre') %} class="sorted"{% endif %}>
+            {{ knp_pagination_sortable(pagination, 'Sector', 'a.nombre') }}
+        </th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+
+    {# table body #}
+    {% for article in pagination %}
+        <tr {% if loop.index is odd %}class="color"{% endif %}>
+            <td>{{ article.1 }}</td>
+            <td>{{ article.email }}</td>
+            <td>{{ article.roles.0 }}</td>
+            <td>{{ article.nombre }}</td>
+            <td><a href="{{'/edit_user/' ~ article.1}}" target="">Edit</a></td>
+            <td><a href="{{'/delete_user/' ~ article.1}}" target="">Delete</a></td>
+            </tr>
+    {% endfor %}
+            <tr>
+                <td colspan = "2"><a href="{{path('signup')}}" class="btn btn-primary">Nuevo Usuario</a></td>
+                <td colspan = "5" class="center"><span class="navigation">{{ knp_pagination_render(pagination) }}</span></td>
+            </tr>
+</table>
+{# display navigation #}
+<table>
+</table>
+
+{% endblock %}

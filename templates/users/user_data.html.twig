@@ -1,0 +1,171 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{parent()}} - User Data{% endblock %}
+
+{% block body %}
+{{parent()}}
+
+<form name="user_data">
+    <div class="form-row">
+        <div class="form-group col-md-3"> 
+            <label for="inputusuario">Tipo de usuario</label>
+            <select name=user class="form-control" id="usuario" onchange="cambia_pais()"> 
+                <option value="0" selected>Elige</option>
+                <option value="1">Entidad física</option>
+                <option value="2">Entidad jurídica</option>
+            </select>
+        </div>
+        <div class="form-group col-md-3"> 
+            <label for="inputpais" >Pais</label>
+            <select name=pais class="form-control" id="pais" onchange=""> 
+                <option value="-" selected>-</option>
+            </select>
+        </div>   
+        <div class="form-group col-md-3"> 
+            <label for="inputtipodocumento">Tipo de Documento</label>
+            <select name=documento class="form-control" id="tipodocumento"> 
+                <option value="-" selected>-</option>
+            </select>
+        </div>  
+        <div class="form-group col-md-3">
+            <label for="inputnombre">Documento</label>
+            <input type="text" class="form-control" id="inputdocumento" placeholder="Documento">
+        </div>
+    </div>
+ 
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="inputnombre">Nombre</label>
+            <input type="text" class="form-control" id="inputnombre" placeholder="Nombre/Nombre de la sociedad">
+        </div>
+        <div class="form-group col-md-6">
+            <label for="inputapellidos">Apellidos</label>
+            <input type="text" class="form-control" id="inputapellidos" placeholder="Apellidos">
+        </div>
+    </div>
+
+  <div class="form-group">
+    <label for="inputAddress">Address</label>
+    <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
+  </div>
+  <div class="form-group">
+    <label for="inputAddress2">Address 2</label>
+    <input type="text" class="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor">
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="inputCity">City</label>
+      <input type="text" class="form-control" id="inputCity">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputState">State</label>
+      <select id="inputState" class="form-control">
+        <option selected>Choose...</option>
+        <option>...</option>
+      </select>
+    </div>
+    <div class="form-group col-md-2">
+      <label for="inputZip">Zip</label>
+      <input type="text" class="form-control" id="inputZip">
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" id="gridCheck">
+      <label class="form-check-label" for="gridCheck">
+        Check me out
+      </label>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">Sign in</button>
+</form>
+
+<script>
+
+var document_fisica_españa=["-","NIF","Pasaporte"] 
+var document_fisica_other=["-","NIE","Pasaporte"] 
+var pais_fisica = ["-","España"]
+var pais_juridica = ["-","España","Otro"]
+var paises = [pais_fisica,pais_juridica]
+
+var documentos = [document_fisica_españa,document_fisica_other]
+
+function cambia_pais(){ 
+   	//tomo el valor del select del tipo de usuario elegido 
+   	var user 
+   	user = document.user_data.user[document.user_data.user.selectedIndex].value 
+   	//miro a ver si el pais está definido 
+   	if (user != 0) {
+            if (user == 2) {      	 
+                document.user_data.documento.length = 1      	
+                document.user_data.documento.options[0].value = "CIF" 
+                document.user_data.documento.options[0].text = "CIF"
+
+                mi_pais=paises[1] 
+                //calculo el numero de paises 
+                num_paises = mi_pais.length 
+                //marco el número de provincias en el select 
+                document.user_data.pais.length = num_paises 
+                //para cada provincia del array, la introduzco en el select 
+                for(i=0;i<num_paises;i++){ 
+                    document.user_data.pais.options[i].value=mi_pais[i] 
+                    document.user_data.pais.options[i].text=mi_pais[i] 
+                }
+            }else{ 
+                document.user_data.documento.length = 1      	
+                document.user_data.documento.options[0].value = "-" 
+                document.user_data.documento.options[0].text = "-"
+            } 
+            
+      	mi_pais=paises[user] 
+      	//calculo el numero de paises 
+      	num_paises = mi_pais.length 
+      	//marco el número de provincias en el select 
+      	document.user_data.pais.length = num_paises 
+      	//para cada provincia del array, la introduzco en el select 
+      	for(i=0;i<num_paises;i++){ 
+         	document.user_data.pais.options[i].value=mi_pais[i] 
+         	document.user_data.pais.options[i].text=mi_pais[i] 
+      	}	
+   	}else{ 
+      	//si no había provincia seleccionada, elimino las provincias del select 
+      	document.user_data.pais.length = 1 
+      	//coloco un guión en la única opción que he dejado 
+      	document.user_data.pais.options[0].value = "-" 
+      	document.user_data.pais.options[0].text = "-" 
+   	} 
+   	//marco como seleccionada la opción primera de provincia 
+   	document.user_data.pais.options[0].selected = true 
+}
+
+function cambia_documento(){ 
+   	//tomo el valor del select del tipo de usuario elegido 
+   	var pais 
+   	pais = document.user_data.pais[document.user_data.pais.selectedIndex].value 
+   	
+   	if (pais != 0) {
+      	
+      	mis_documentos=documentos[pais] 
+      	
+      	num_documentos = mis_documentos.length 
+      	 
+      	document.user_data.documento.length = num_documentos 
+      	
+      	for(i=0;i<num_documentos;i++){ 
+         	document.user_data.documento.options[i].value=mis_documentos[i] 
+         	document.user_data.documento.options[i].text=mis_documentos[i] 
+      	}	
+   	}else{ 
+      	
+      	document.user_data.documento.length = 1 
+
+      	document.user_data.documento.options[0].value = "-" 
+      	document.user_data.documento.options[0].text = "-" 
+   	} 
+
+   	document.user_data.pais.options[0].selected = true 
+}
+
+</script>
+
+{% endblock %}

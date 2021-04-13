@@ -2,18 +2,69 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Prueba Atrinium{% endblock %}</title>
         {# Run `composer require symfony/webpack-encore-bundle`
            and uncomment the following Encore helpers to start using Symfony UX #}
         {% block stylesheets %}
-            {#{{ encore_entry_link_tags('app') }}#}
+            <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css')}}">
+            <link rel="stylesheet" href="{{ asset('css/stylesheet.css')}}">
         {% endblock %}
 
         {% block javascripts %}
-            {#{{ encore_entry_script_tags('app') }}#}
+            <script src="{{ asset('js/jquery.min.js') }}"></script>
+            <script src="{{ asset('js/bootstrap.min.js') }}"></script>
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {% block body %}
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="/">Prueba Atrinium</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{path('historic')}}">Currency-Change <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <a class="nav-link" href="{{path('empresa-list')}}">Empresas <span class="sr-only">(current)</span></a>
+                    {% endif %}
+                </li>
+                <li class="nav-item">
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <a class="nav-link" href="{{path('sector-list')}}">Sectores</a>
+                    {% endif %}
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    User Menu
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{{path('app_login')}}">Login <span class="sr-only">(current)</span></a>
+                    <a class="dropdown-item" href="{{path('signup')}}">Sign Up <span class="sr-only">(current)</span></a>
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <a class="dropdown-item" href="{{path('app_logout')}}">Logout <span class="sr-only">(current)</span></a>
+                    {% endif %}
+                    <div class="dropdown-divider"></div>
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{path('user-list')}}" class="dropdown-item">User List</a>
+                    {% endif %}
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <a class="dropdown-item" href="{{path('user-data')}}">User Data</a>
+                    {% endif %}
+                    </div>
+                </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            </div>
+            </nav>
+        {% endblock %}
     </body>
 </html>

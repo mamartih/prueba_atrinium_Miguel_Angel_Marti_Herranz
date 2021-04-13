@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{parent()}} - Delete User{% endblock %}
+
+{% block body %}
+{{parent()}}
+<div><h3>Do you really want to delete user: {{user.email}}</h3></div>
+<a href="{{path('user-list')}}" class="btn btn-warning">Cancel</a>
+<a href="{{'/persist_delete_user/' ~ id}}"" class="btn btn-warning">Delete</a>
+
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{parent()}} - Create Sector{% endblock %}
+
+{% block body %}
+{{ form_start(form) }}
+<table><tr>
+    {{ form_row(form.nombre, {
+        label: 'Sector',
+    }) }}</tr>
+        <tr>
+        {% if is_granted('ROLE_ADMIN') %}
+            <td>{{ form_row(form.save) }}</td>
+            <td>{{ form_row(form.cancel) }}</td></tr>
+        {% endif %}
+        </tr>
+    </table>
+{{ form_end(form) }}
+{% endblock %}

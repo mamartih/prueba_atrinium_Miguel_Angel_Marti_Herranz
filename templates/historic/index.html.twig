@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{parent()}} - Currency Change{% endblock %}
+
+{% block body %}
+{{parent()}}
+{{form(form)}}
+
+<div class='row col-6'>
+        <div class="col-2"><a id="check" class="btn btn-primary">Submit</a></div>
+        <div class="col-2"> Result</div>
+        <div class="col-8"><input autocomplete='off' readonly type="text" name="current_password" id="resultado"></div>
+ </div>
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            url: "http://data.fixer.io/api/latest?access_key=fa01835b25a6f6190a0e2eae238a0d73&format=1",
+            type:'POST',
+            dataType: 'json',
+        }).done(function(data) {
+                rates = data.rates;
+                currentCurrency = '<option value="0">Select Option</option>';
+                $.each(rates, function( index, value ) {
+                    /*Con mi usuario de la API solo podemos hacer 
+                    consultas con moned base EUR*/
+                    if(index=="EUR"){
+                        currentCurrency += '<option value="'+index+'">'+index+'</option>';
+                    };
+                });
+                $('#historic_origin_currency').html(currentCurrency)
+            });
+        _ChargeDestinyCurrency();
+
+        $('#check').click(function () { 
+            postObj = new Object();
+            postObj.origin_currency=$('#historic_origin_currency').val();
+            postObj.destiny_currency=$('#historic_destiny_currency').val();
+            postObj.original_import=$('#historic_original_import').val();
+            postObj.final_import='';
+            postObj.date=$('#historic_date_year').val()+'-'+$('#historic_date_month').val()
+            +'-'+$('#historic_date_day').val()+' 00:00:00';
+            
+            $.ajax({
+                url: "{{path('historic-search')}}",
+                type:'POST',
+                dataType: 'json',
+                data: postObj
+            }).done(function(data) {
+                if(data[0].finalImport>0){          
+                    $('#resultado').val('Total converted currency: '+data[0].finalImport +' '+ postObj.destiny_currency);
+                }
+            });
+        });
+    });
+    function _ChargeDestinyCurrency (){
+         $.ajax({
+            url: "{{path('historic-destiny-currency')}}",
+            type:'POST',
+            dataType: 'json',
+        }).done(function(data) {
+                currentCurrency = '<option value="0">Select Option</option>';
+                $.each(data, function( index, value ) {
+                currentCurrency += '<option value="'+index+'">'+index+'</option>';
+                });
+                $('#historic_destiny_currency').html(currentCurrency)
+            });
+    };
+</script>
+
+{% endblock %}
+
+

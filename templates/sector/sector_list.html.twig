@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{parent()}} - Sector List{% endblock %}
+
+{% block body %}
+{{parent()}}
+
+<div class="count">
+   Numero de sectores => {{ pagination.getTotalItemCount }}
+</div>
+<table class="table">
+    <tr>
+        {# sorting of properties based on query components #}
+        
+        <th>{{ knp_pagination_sortable(pagination, 'Id', 'a.id') }}</th>
+        <th{% if pagination.isSorted('a.nombre') %} class="sorted"{% endif %}>
+            {{ knp_pagination_sortable(pagination, 'Nombre', 'a.nombre') }}
+        </th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+
+    {# table body #}
+    {% for article in pagination %}
+        <tr {% if loop.index is odd %}class="color"{% endif %}>  
+            <td>{{ article.id }}</td>
+            <td>{{ article.nombre }}</td>
+            {% if is_granted('ROLE_ADMIN') %}
+            <td><a href="{{'/edit_sector/' ~ article.id}}" target="">Edit</a></td>
+            <td><a href="{{'/predelete_sector/' ~ article.id}}" target="">Delete</a></td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+    {# display navigation #}
+        <tr>
+        {% if is_granted('ROLE_ADMIN') %}
+            <td colspan = "2"><a href="{{path('sector')}}" class="btn btn-primary">Nuevo Sector</a></td>
+        {% endif %}   
+            <td colspan = "2"><span class="navigation">{{ knp_pagination_render(pagination) }}</span></td>
+        </tr>
+</table>
+
+
+{% endblock %}

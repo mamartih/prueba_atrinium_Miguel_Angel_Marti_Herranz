@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{parent()}} - Edit User{% endblock %}
+
+{% block body %}
+{{parent()}}
+{{dump(sectores)}}
+{{dump(user2)}}
+{{ form_start(form) }}
+<table>
+    <tr>{{ form_row(form.email, {
+        label: 'Email de Usuario',
+        label_attr: {'value':user2.email},
+        attr: {'placeholder':user2.email}
+    }) }}</tr>
+     <tr>{{ form_row(form.roles, {
+        label: 'Rol de Usuario',
+        attr: {'placeholder':user2.roles.0,
+        'selected':user2.roles.0}
+    })  }}</tr>
+     {# <tr>{% for tag in form.sector %}
+            {{ form_row(tag.nombre) }}
+        {% endfor %}</tr>
+     <tr><td>{{ form_row(form.update) }}</td> #}
+    <td>{{ form_row(form.update) }}</td></tr>
+{{ form_end(form) }}</table>
+<script>
+$( document ).ready(function() {
+    
+    var sectores = new Array({{sectores}});
+    console.log(sectores)
+
+    $.each(sectores[0], function( index, value ) {
+        $('#user_edit_sector_'+value).prop('checked',true);
+        console.log(value);
+    });
+
+    
+
+});
+</script>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{parent()}} - Edit Sector{% endblock %}
+
+{% block body %}
+{{parent()}}
+{{ form_start(form) }}
+<table><tr>
+    {{ form_row(form.nombre, {
+        label: 'Sector',
+        label_attr: {'Selected':sector.nombre}
+    }) }}</tr>
+        <tr>
+        {% if is_granted('ROLE_ADMIN') %}
+            <td>{{ form_row(form.update) }}</td>
+            <td>{{ form_row(form.cancel) }}</td></tr>
+        {% endif %}
+        </tr>
+    </table>
+{{ form_end(form) }}
+
+{% endblock %}
